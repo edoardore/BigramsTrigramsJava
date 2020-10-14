@@ -7,12 +7,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Consumer implements Runnable {
     private BlockingQueue<Vector<String>> q;
-    private int nThread;
-    private ConcurrentHashMap<String, Integer> concurrentHashMap;
+    private ConcurrentHashMap<String, Integer> bigramConcurrentHashMap;
+    private ConcurrentHashMap<String, Integer> trigramConcurrentHashMap;
 
-    public Consumer(ConcurrentHashMap<String, Integer> concurrentHashMap, int nThread, BlockingQueue<Vector<String>> q) {
-        this.concurrentHashMap = concurrentHashMap;
-        this.nThread = nThread;
+
+    public Consumer(ConcurrentHashMap<String, Integer> bigramConcurrentHashMap, ConcurrentHashMap<String, Integer> trigramConcurrentHashMap,
+                    BlockingQueue<Vector<String>> q) {
+        this.bigramConcurrentHashMap = bigramConcurrentHashMap;
+        this.trigramConcurrentHashMap = trigramConcurrentHashMap;
         this.q = q;
     }
 
@@ -25,20 +27,28 @@ public class Consumer implements Runnable {
             e.getStackTrace();
         }
         String bigram = new String();
+        String trigram = new String();
         String word = new String();
+        Character c = '"';
+        String str = Character.toString(c);
         for (int i = 0; i < text.size(); i++) {
             word = text.get(i);
-            Character c = '"';
-            String str = Character.toString(c);
             if (word.length() > 1) {
                 for (int j = 0; j < word.length() - 1; j++) {
                     bigram = word.substring(j, j + 2);
                     if (!bigram.contains(str)) {
-                        concurrentHashMap.merge(bigram, 1, Integer::sum);
+                        bigramConcurrentHashMap.merge(bigram, 1, Integer::sum);
+                    }
+                }
+            }
+            if (word.length() > 2) {
+                for (int k = 0; k < word.length() - 2; k++) {
+                    trigram = word.substring(k, k + 3);
+                    if (!trigram.contains(str)) {
+                        trigramConcurrentHashMap.merge(trigram, 1, Integer::sum);
                     }
                 }
             }
         }
-        System.out.println("id " + nThread + " " + concurrentHashMap);
     }
 }

@@ -9,17 +9,9 @@ public class MainSequential {
         long startTime = System.currentTimeMillis();
         ArrayList<Path> fileQueue = new ArrayList<>();
         ArrayList<Vector<String>> q = new ArrayList<>();
-        HashMap<String, Integer> hashMap = new HashMap<>();
-        String dirName = "/Users/edore/IdeaProjects/Bigrams/Italiano";
-        try {
-            Files.list(new File(dirName).toPath())
-                    .forEach(path -> {
-                        fileQueue.add(path);
-                    });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        dirName = "/Users/edore/IdeaProjects/Bigrams/English";
+        HashMap<String, Integer> bigramHashMap = new HashMap<>();
+        HashMap<String, Integer> trigramHashMap = new HashMap<>();
+        String dirName = "/Users/edore/IdeaProjects/Bigrams/English";
         try {
             Files.list(new File(dirName).toPath())
                     .forEach(path -> {
@@ -56,6 +48,7 @@ public class MainSequential {
             Vector<String> text = new Vector<String>();
             text = producerUnit;
             String bigram = new String();
+            String trigram = new String();
             String word = new String();
             Character c = '"';
             String str = Character.toString(c);
@@ -65,7 +58,15 @@ public class MainSequential {
                     for (int j = 0; j < word.length() - 1; j++) {
                         bigram = word.substring(j, j + 2);
                         if (!bigram.contains(str)) {
-                            hashMap.merge(bigram, 1, Integer::sum);
+                            bigramHashMap.merge(bigram, 1, Integer::sum);
+                        }
+                    }
+                }
+                if (word.length() > 2) {
+                    for (int k = 0; k < word.length() - 2; k++) {
+                        trigram = word.substring(k, k + 3);
+                        if (!trigram.contains(str)) {
+                            trigramHashMap.merge(trigram, 1, Integer::sum);
                         }
                     }
                 }
@@ -73,14 +74,16 @@ public class MainSequential {
             consumerTime += System.currentTimeMillis() - startConsumerTime;
         }
         long startConsumerTime = System.currentTimeMillis();
-        System.out.println(hashMap);
-        TableGenerator.createHtml(hashMap);
+        System.out.println("Bigrammi: " + bigramHashMap);
+        System.out.println("Trigrammi " + trigramHashMap);
+        TableGenerator.createHtml(bigramHashMap, 2);
+        TableGenerator.createHtml(trigramHashMap, 3);
         consumerTime += System.currentTimeMillis() - startConsumerTime;
         long totalTime = System.currentTimeMillis() - startTime;
         System.out.println("Tempo di esecuzione processo di lettura delle parole: " +
                 TimeUnit.MILLISECONDS.toMinutes(producerTime) + "min " +
                 (TimeUnit.MILLISECONDS.toSeconds(producerTime) - 60 * TimeUnit.MILLISECONDS.toMinutes(producerTime)) + "s");
-        System.out.println("Tempo di conteggio dei bigrammi: " +
+        System.out.println("Tempo di conteggio dei bigrammi e trigrammi: " +
                 TimeUnit.MILLISECONDS.toMinutes(consumerTime) + "min " +
                 (TimeUnit.MILLISECONDS.toSeconds(consumerTime) - 60 * TimeUnit.MILLISECONDS.toMinutes(consumerTime)) + "s");
         System.out.println("Tempo Totale di esecuzione programma sequenziale: " +

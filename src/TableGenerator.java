@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TableGenerator {
-    public static void createHtml(HashMap<String, Integer> hashMap){
+    public static void createHtml(HashMap<String, Integer> hashMap, int i) {
         StringBuilder htmlBuilder = new StringBuilder();
         htmlBuilder.append("<!DOCTYPE html>\n" +
                 "<html>\n" +
@@ -31,75 +31,34 @@ public class TableGenerator {
                 "    </style>\n" +
                 "</head>\n" +
                 "<body>\n" +
-                "\n" +
-                "<p><button onclick=\"sortTable()\">Sort alphabetically</button></p>\n" +
-                "\n" +
-                "<p><button onclick=\"sortTabByInt()\">Sort by occurrence</button></p>\n" +
                 "<table id=\"myTable\">");
         for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
             htmlBuilder.append(String.format("<tr><td>%s</td><td>%d</td></tr>",
                     entry.getKey(), entry.getValue()));
         }
         htmlBuilder.append("</table>\n" +
-                "\n" +
-                "<script>\n" +
-                "function sortTable() {\n" +
-                "        var table, rows, switching, i, x, y, shouldSwitch;\n" +
-                "        table = document.getElementById(\"myTable\");\n" +
-                "        switching = true;\n" +
-                "        while (switching) {\n" +
-                "            switching = false;\n" +
-                "            rows = table.rows;\n" +
-                "            for (i = 0; i < (rows.length - 1); i++) {\n" +
-                "                shouldSwitch = false;\n" +
-                "                x = rows[i].getElementsByTagName(\"TD\")[0];\n" +
-                "                y = rows[i + 1].getElementsByTagName(\"TD\")[0];\n" +
-                "                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {\n" +
-                "                    shouldSwitch = true;\n" +
-                "                    break;\n" +
-                "                }\n" +
-                "            }\n" +
-                "            if (shouldSwitch) {\n" +
-                "                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);\n" +
-                "                switching = true;\n" +
-                "            }\n" +
-                "        }\n" +
-                "    }\n" +
-                "\n" +
-                "    function sortTabByInt() {\n" +
-                "        var table, rows, switching, i, x, y, shouldSwitch;\n" +
-                "        table = document.getElementById(\"myTable\");\n" +
-                "        switching = true;\n" +
-                "        while (switching) {\n" +
-                "            switching = false;\n" +
-                "            rows = table.rows;\n" +
-                "            for (i = 0; i < (rows.length - 1); i++) {\n" +
-                "                shouldSwitch = false;\n" +
-                "                x = rows[i].getElementsByTagName(\"TD\")[1];\n" +
-                "                y = rows[i + 1].getElementsByTagName(\"TD\")[1];\n" +
-                "                if (parseInt(x.innerHTML) < parseInt(y.innerHTML)) {\n" +
-                "                    shouldSwitch = true;\n" +
-                "                    break;\n" +
-                "                }\n" +
-                "            }\n" +
-                "            if (shouldSwitch) {\n" +
-                "                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);\n" +
-                "                switching = true;\n" +
-                "            }\n" +
-                "        }\n" +
-                "    }" +
-                "</script>\n" +
-                "\n" +
                 "</body>\n" +
                 "</html>");
         String html = htmlBuilder.toString();
-        File file = new File("Bigrams.html");
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-            writer.write(html);
-            writer.close();
-        } catch (IOException e) {
-            e.getStackTrace();
+        if (i == 2) {
+            File file = new File("Bigrams.html");
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                writer.write(html);
+                writer.close();
+            } catch (IOException e) {
+                e.getStackTrace();
+            }
+        }
+        if (i == 3) {
+            File file = new File("Trigrams.html");
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                writer.write(html);
+                writer.close();
+            } catch (IOException e) {
+                e.getStackTrace();
+            }
         }
     }
 }
