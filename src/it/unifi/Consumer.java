@@ -4,12 +4,10 @@ import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 public class Consumer implements Runnable {
     private BlockingQueue<Vector<String>> q;
     private ConcurrentHashMap<String, Integer> bigramConcurrentHashMap;
     private ConcurrentHashMap<String, Integer> trigramConcurrentHashMap;
-
 
     public Consumer(ConcurrentHashMap<String, Integer> bigramConcurrentHashMap, ConcurrentHashMap<String, Integer> trigramConcurrentHashMap,
                     BlockingQueue<Vector<String>> q) {

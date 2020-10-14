@@ -1,13 +1,11 @@
 package it.unifi;
 
-
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
-
 
 public class Producer implements Runnable {
     private BlockingQueue<Vector<String>> q = null;
