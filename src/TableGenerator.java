@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -8,11 +9,16 @@ import java.util.Map;
 public class TableGenerator {
     public static void createHtml(HashMap<String, Integer> hashMap, int i) {
         StringBuilder htmlBuilder = new StringBuilder();
+        String name = "";
+        if (i == 2)
+            name = "Bigrams";
+        if (i == 3)
+            name = "Trigrams";
         htmlBuilder.append("<!DOCTYPE html>\n" +
                 "<html>\n" +
                 "<head>\n" +
                 "  <meta charset=\"UTF-8\">\n" +
-                "    <title>Bigrams</title>\n" +
+                "    <title>" + name + "</title>\n" +
                 "    <style>\n" +
                 "        table {\n" +
                 "            border-spacing: 0;\n" +
@@ -46,6 +52,7 @@ public class TableGenerator {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file));
                 writer.write(html);
                 writer.close();
+                Desktop.getDesktop().browse(file.toURI());
             } catch (IOException e) {
                 e.getStackTrace();
             }
@@ -56,6 +63,7 @@ public class TableGenerator {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file));
                 writer.write(html);
                 writer.close();
+                Desktop.getDesktop().browse(file.toURI());
             } catch (IOException e) {
                 e.getStackTrace();
             }
