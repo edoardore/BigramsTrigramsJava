@@ -27,14 +27,12 @@ public class Consumer implements Runnable {
         String bigram = new String();
         String trigram = new String();
         String word = new String();
-        Character c = '"';
-        String str = Character.toString(c);
         for (int i = 0; i < text.size(); i++) {
             word = text.get(i);
             if (word.length() > 1) {
                 for (int j = 0; j < word.length() - 1; j++) {
                     bigram = word.substring(j, j + 2);
-                    if (!bigram.contains(str)) {
+                    if (!bigram.contains("_")) {
                         bigramConcurrentHashMap.merge(bigram, 1, Integer::sum);
                     }
                 }
@@ -42,7 +40,7 @@ public class Consumer implements Runnable {
             if (word.length() > 2) {
                 for (int k = 0; k < word.length() - 2; k++) {
                     trigram = word.substring(k, k + 3);
-                    if (!trigram.contains(str)) {
+                    if (!trigram.contains("_")) {
                         trigramConcurrentHashMap.merge(trigram, 1, Integer::sum);
                     }
                 }

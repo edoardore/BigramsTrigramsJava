@@ -42,9 +42,10 @@ public class MainSequential {
             } catch (FileNotFoundException e) {
             }
             Vector<String> producerUnit = new Vector<String>();
-            StringTokenizer tokenizer = new StringTokenizer(readFile, " $#%^&*+=~`,.:;<>_()[]{}!�-?@'/|1234567890");
-            while (tokenizer.hasMoreTokens()) {
-                producerUnit.add(tokenizer.nextToken().toLowerCase());
+            String[] tokens = readFile.split("\\W");
+            for (String token : tokens) {
+                if (!token.equals("") && !token.matches(".*\\d.*"))
+                    producerUnit.add(token.toLowerCase());
             }
             producerTime += System.currentTimeMillis() - startProducerTime;
             long startConsumerTime = System.currentTimeMillis();
@@ -53,14 +54,12 @@ public class MainSequential {
             String bigram = new String();
             String trigram = new String();
             String word = new String();
-            Character c = '"';
-            String str = Character.toString(c);
             for (int i = 0; i < text.size(); i++) {
                 word = text.get(i);
                 if (word.length() > 1) {
                     for (int j = 0; j < word.length() - 1; j++) {
                         bigram = word.substring(j, j + 2);
-                        if (!bigram.contains(str)) {
+                        if (!bigram.contains("_")) {
                             bigramHashMap.merge(bigram, 1, Integer::sum);
                         }
                     }
@@ -68,7 +67,7 @@ public class MainSequential {
                 if (word.length() > 2) {
                     for (int k = 0; k < word.length() - 2; k++) {
                         trigram = word.substring(k, k + 3);
-                        if (!trigram.contains(str)) {
+                        if (!trigram.contains("_")) {
                             trigramHashMap.merge(trigram, 1, Integer::sum);
                         }
                     }

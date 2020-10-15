@@ -3,7 +3,6 @@ package it.unifi;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
 
@@ -36,9 +35,10 @@ public class Producer implements Runnable {
                     e.getStackTrace();
                 }
                 Vector<String> producerUnit = new Vector<String>();
-                StringTokenizer tokenizer = new StringTokenizer(readFile, " $#%^&*+=~`,.:;<>_()[]{}!�-?@'/|1234567890");
-                while (tokenizer.hasMoreTokens()) {
-                    producerUnit.add(tokenizer.nextToken().toLowerCase());
+                String[] tokens = readFile.split("\\W");
+                for (String token : tokens) {
+                    if (!token.equals("")&&!token.matches(".*\\d.*"))
+                        producerUnit.add(token.toLowerCase());
                 }
                 try {
                     q.put(producerUnit);
