@@ -1,3 +1,6 @@
+import it.unifi.PlotGenerator;
+import org.jfree.ui.RefineryUtilities;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -74,6 +77,26 @@ public class MainSequential {
             consumerTime += System.currentTimeMillis() - startConsumerTime;
         }
         long startConsumerTime = System.currentTimeMillis();
+        int nBigram = bigramHashMap.size();
+        int nTrigram = trigramHashMap.size();
+        Map.Entry<String, Integer> maxBigramEntry = null;
+        for (Map.Entry<String, Integer> entry : bigramHashMap.entrySet()) {
+            if (maxBigramEntry == null || entry.getValue().compareTo(maxBigramEntry.getValue()) > 0) {
+                maxBigramEntry = entry;
+            }
+        }
+        Map.Entry<String, Integer> maxTrigramEntry = null;
+        for (Map.Entry<String, Integer> entry : trigramHashMap.entrySet()) {
+            if (maxTrigramEntry == null || entry.getValue().compareTo(maxTrigramEntry.getValue()) > 0) {
+                maxTrigramEntry = entry;
+            }
+        }
+        PlotGenerator chart = new PlotGenerator("Execution recap", "Some results of execution",
+                maxBigramEntry.getKey(), maxBigramEntry.getValue(), maxTrigramEntry.getKey(),
+                maxTrigramEntry.getValue(), nBigram, nTrigram);
+        chart.pack();
+        RefineryUtilities.centerFrameOnScreen(chart);
+        chart.setVisible(true);
         System.out.println("Bigrammi: " + bigramHashMap);
         System.out.println("Trigrammi " + trigramHashMap);
         TableGenerator.createHtml(bigramHashMap, 2);
