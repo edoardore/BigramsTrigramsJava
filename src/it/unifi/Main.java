@@ -20,7 +20,7 @@ public class Main {
         BlockingQueue<Path> fileQueue = new LinkedBlockingQueue<>();
         ConcurrentHashMap<String, Integer> bigramConcurrentHashMap = new ConcurrentHashMap<String, Integer>();
         ConcurrentHashMap<String, Integer> trigramConcurrentHashMap = new ConcurrentHashMap<String, Integer>();
-        String dirName = "/Users/edore/IdeaProjects/Bigrams/English";
+        String dirName = "/Users/edore/IdeaProjects/Bigrams/Gutenberg/txt";
         try {
             Files.list(new File(dirName).toPath())
                     .forEach(path -> {
@@ -37,7 +37,7 @@ public class Main {
             fileQueue.put(end);
         } catch (InterruptedException e) {
         }
-        int nProducer = 48;
+        int nProducer = 300;
         int nConsumer = fileQueue.size() - 1;
         ExecutorService producer = Executors.newFixedThreadPool(nProducer);
         for (int i = 0; i < nProducer; i++) {

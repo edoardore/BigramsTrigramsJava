@@ -14,7 +14,7 @@ public class MainSequential {
         ArrayList<Vector<String>> q = new ArrayList<>();
         HashMap<String, Integer> bigramHashMap = new HashMap<>();
         HashMap<String, Integer> trigramHashMap = new HashMap<>();
-        String dirName = "/Users/edore/IdeaProjects/Bigrams/English";
+        String dirName = "/Users/edore/IdeaProjects/Bigrams/Gutenberg/txt";
         try {
             Files.list(new File(dirName).toPath())
                     .forEach(path -> {
