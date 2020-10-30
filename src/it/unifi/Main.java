@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Vector;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Main {
@@ -37,15 +38,18 @@ public class Main {
             fileQueue.put(end);
         } catch (InterruptedException e) {
         }
-        int nProducer = 300;
-        int nConsumer = fileQueue.size() - 1;
+        int nProducer = 2;
+        int nConsumer = 2;
+        AtomicInteger atomicIntegerProducer = new AtomicInteger(nProducer);
+        AtomicInteger atomicIntegerQueue = new AtomicInteger(0);
         ExecutorService producer = Executors.newFixedThreadPool(nProducer);
         for (int i = 0; i < nProducer; i++) {
-            producer.submit(new Producer(q, fileQueue));
+            producer.submit(new Producer(q, atomicIntegerProducer, atomicIntegerQueue, fileQueue));
         }
         ExecutorService consumer = Executors.newFixedThreadPool(nConsumer);
         for (int i = 0; i < nConsumer; i++) {
-            consumer.submit(new Consumer(bigramConcurrentHashMap, trigramConcurrentHashMap, q));
+            consumer.submit(new Consumer(bigramConcurrentHashMap, nProducer, atomicIntegerProducer,
+                    atomicIntegerQueue, trigramConcurrentHashMap, q));
         }
         producer.shutdown();
         consumer.shutdown();
