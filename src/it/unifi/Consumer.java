@@ -34,7 +34,7 @@ public class Consumer implements Runnable {
             String trigram = new String();
             String word = new String();
             try {
-                text = q.poll(500, TimeUnit.MILLISECONDS);
+                text = q.poll(5000, TimeUnit.MILLISECONDS);
             } catch (InterruptedException e) {
             }
             for (int i = 0; i < text.size(); i++) {

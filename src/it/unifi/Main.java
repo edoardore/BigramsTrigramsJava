@@ -38,7 +38,7 @@ public class Main {
             fileQueue.put(end);
         } catch (InterruptedException e) {
         }
-        int nProducer = 2;
+        int nProducer = 4;
         int nConsumer = 2;
         AtomicInteger atomicIntegerProducer = new AtomicInteger(nProducer);
         AtomicInteger atomicIntegerQueue = new AtomicInteger(0);
